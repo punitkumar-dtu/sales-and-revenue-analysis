@@ -1,9 +1,29 @@
+/*==============================================================
+                 SALES AND REVENUE ANALYSIS
+===============================================================
+
+Author      : Punit Kumar
+Database    : MySQL
+Dataset     : Superstore Sales Dataset
+Project     : Sales & Revenue Analysis
+
+Objective:
+Analyse sales performance, profitability, customer behaviour,
+regional trends, product performance, discount impact,
+and shipping efficiency using SQL.
+
+==============================================================*/
+/*==============================================================
+1. DATABASE SETUP & INITIAL EXPLORATION
+==============================================================*/
 create database super_sale_analysis;
 
 use super_sale_analysis;
 select * from superstore_mysql;
 
+-- Inspect the table structure and available columns
 describe  superstore_mysql;
+
 -- order date and ship date are in text convert it into date foramt
 select count(*) as null_values 
 from superstore_mysql
@@ -14,11 +34,13 @@ from superstore_mysql
 group by order_id
 having count(*)>1;
 
+-- Create new DATE columns to store cleaned dates
 alter table superstore_mysql add column orderdate_clean date;
 alter table superstore_mysql add column shipdate_clean date;
 
 SET SQL_SAFE_UPDATES = 0;
 
+-- Convert text dates into SQL DATE format
 update superstore_mysql 
 set orderdate_clean = str_to_date(order_date , '%Y-%m-%d'),
     shipdate_clean = str_to_date(ship_date , '%Y-%m-%d');
@@ -31,6 +53,11 @@ max(orderdate_clean) as latest_date ,
 sum(case when profit <0 then 1 else 0 end) as loss_revenue 
 from superstore_mysql ;
 
+/*==============================================================
+3. OVERALL BUSINESS PERFORMANCE
+==============================================================*/
+
+-- Calculate overall business KPIs
 
 select
 count(*) as total_rows,
@@ -41,6 +68,7 @@ count(distinct order_id) as total_customer,
 count(distinct customer_id) as total_customer
 from superstore_mysql;
 
+-- Revenue and profit performance by year
 select 
 year(orderdate_clean) as order_year,
 round(sum(sales),2) as total_revenue,
@@ -51,6 +79,11 @@ from superstore_mysql
 group by order_year
 order by order_year ;
 
+/*==============================================================
+4. REGIONAL PERFORMANCE ANALYSIS
+==============================================================*/
+
+-- Compare revenue and profitability across regions
 select 
 region ,
 round(sum(sales),2) as total_revenue,
@@ -60,6 +93,7 @@ from superstore_mysql
 group by region 
 order by region DESC;
 
+-- Identify top-performing states
 select 
 state ,
 round(sum(sales),2) as total_revenue,
@@ -69,6 +103,11 @@ from superstore_mysql
 group by state 
 order by state DESC;
 
+/*==============================================================
+5. PRODUCT PERFORMANCE ANALYSIS
+==============================================================*/
+
+-- Revenue and profit by product category
 select 
 category ,
 round(sum(sales),2) as total_revenue,
@@ -78,6 +117,7 @@ from superstore_mysql
 group by category
 order by category DESC;
 
+-- Revenue and profit by product sub-category
 select 
 sub_category ,
 round(sum(sales),2) as total_revenue,
@@ -87,6 +127,7 @@ from superstore_mysql
 group by sub_category 
 order by sub_category DESC;
 
+-- Rank least profitable product sub-categories
 select 
 sub_category ,
 round(sum(sales),2) as total_revenue,
@@ -97,6 +138,11 @@ from superstore_mysql
 group by sub_category 
 order by total_profit ASC;
 
+/*==============================================================
+6. DISCOUNT IMPACT ANALYSIS
+==============================================================*/
+
+-- Analyse how different discount levels affect profitability
 -- discount level vs profit 
 select 
 case 
@@ -123,7 +169,9 @@ round(avg(profit),2) as avg_profit
  having avg(discount)>.15 and sum(profit)<0
  order by total_profit ASC;
 
--- customer analysis
+/*==============================================================
+7. CUSTOMER ANALYSIS
+==============================================================*/
 -- top 10 customers 
 select customer_id , customer_name ,
 count(distinct customer_id ) as total_customers,
@@ -144,7 +192,11 @@ group by customer_id , customer_name
 order by lifetime_profit ASC
 limit 10;
 
--- month over month revenue growth using lag
+/*==============================================================
+8. SALES TREND ANALYSIS
+==============================================================*/
+
+-- Calculate Month-over-Month (MoM) revenue growth
 with monthly_revenue as (
 select 
 date_format(orderdate_clean,'%Y-%m') as order_month,
@@ -152,6 +204,7 @@ round(sum(sales),2) as revenue
 from superstore_mysql
 group by order_month)
 
+    -- Rank months by revenue within each year
 select order_month , revenue ,
 lag(revenue) over(order by order_month) as previous_month_revenue ,
 round(

@@ -1,73 +1,74 @@
-Supernova — Customer Purchase Behaviour Dashboard
-A customer shopping behaviour analysis built to answer the usual retail questions — who's spending, what's trending, and does a discount actually buy loyalty or just eat margin — cleaned in Python, analyzed in SQL, and visualized in Tableau.
+# 💰Sales/Revenue Performance Dashboard
 
-Pipeline: Python (cleaning) → MySQL (analysis) → Tableau (dashboard).
-The idea
-A customer purchase dataset only gets useful once it's clean and once someone's actually asked it real questions. This project pushes past the obvious "total sales" view to look at discount behaviour, customer segments, product trends, and regional spend patterns.
-Dataset
-Customer shopping trends data — customer ID, age, gender, item purchased, category, purchase amount, location, size, color, season, review rating, subscription status, shipping type, discount applied, promo code used, previous purchases, payment method, and purchase frequency.
-Step 1: Cleaning in Python
-Filled 37 missing Review Rating values using the median rating within each category, instead of a flat overall median
-Standardized column names to snake_case
-Created age_group by binning age into quartiles (child / young / middle / old) using pd.qcut
-Created purchase_frequency_days by mapping text frequency labels (Weekly, Fortnightly, Monthly, Quarterly, etc.) to actual day counts
-Checked whether discount_applied and promo_code_used were identical across the dataset — they were, so promo_code_used was dropped as redundant
-Exported the cleaned file for the SQL step
-Step 2: SQL analysis (supernova.sql)
-Ten business questions run against the cleaned data:
+So this one started because I got annoyed at dashboards that just show revenue going up and call it a win. Cool, revenue's up, but is anyone actually making money? That's basically what this project digs into.
 
-Total revenue by gender
-Customers who used a discount but still spent above the average purchase amount
-Top 5 products by average review rating
-Standard vs Express shipping — average purchase amount comparison
-Subscribers vs non-subscribers — average spend and total revenue
-Top 5 products by discount usage rate
-Customer segmentation into New / Returning / Loyal based on purchase history (CTE + CASE)
-Top 3 most purchased products within each category (ROW_NUMBER() partitioned by category)
-Whether repeat buyers (5+ previous purchases) are more likely to subscribe
-Revenue contribution by age group
-Step 3: Tableau dashboard
-KPI cards — 3,900 total customers, 998 high-value customers, $59.76 avg purchase, 3.750 avg review rating
-Priority Age-Wise treemap — spend by category and age group
-Discount vs Previous Purchase — category mix of spend, split by whether a discount was used
-Revenue by Payment Method — Bank Transfer, Venmo, Debit Card, Cash, Credit Card, PayPal
-Subscription Status — donut, subscribers vs non-subscribers
-Location — spend by U.S. state on a map
-Trending Item — category trend over the season/category axis
-Key Insights panel — auto-surfaced takeaways alongside the visuals
-Filters for Season, Category, and Gender
-What jumps out
-Clothing generates the highest purchase amount of any category — it's the core revenue driver, not just the most-purchased category
-Customers without a discount actually spend more overall — discounts aren't buying bigger baskets here, which is worth flagging before expanding discount programs
-25.1% of customers are "High Value" (998 out of 3,900) — a meaningful chunk worth a dedicated retention approach
-California has the highest average purchase amount by state, useful for regional targeting
-72.22% of customers are not subscribed — subscription conversion is a clear growth lever given how large the non-subscriber base is
-Folder structure
-├── data/
+##Pipeline: Excel -MySQL → Python → Tableau.
 
-│   ├── super_nova_here.csv
+##Dataset
+Customer shopping trends data — purchase amount, category, item, season, discount applied, shipping type, ratings, subscription status, payment method, previous purchases. Pretty standard retail transactions setup.
 
-│   └── supernova_python.csv
 
-├── notebook/
+#Step : Cleaning it in MySQL
+Data was messy as usual, so:
 
-│   └── supernova_python_script.ipynb
+Fixed corrupted rows and dtype issues
+Got dates into proper date format
+Checked for duplicate order IDs and weird negative profit values
+Renamed columns to snake_case, fixed encoding issues
+
+#Step : Tableau dashboard
+9 views:
+
+-Revenue / profit / margin % overall and by year
+
+-Revenue & profit by region, store, category, sub-category
+
+-Sub-categories that are actually losing money on average (window function)
+
+-Discount buckets (0%, 1-20%, 21-40%, 40%+) vs avg profit per bucket
+
+-Top 10 customers by lifetime profit vs top customers by revenue alone (not the same list, which was kind of the whole point)
+
+-Month-over-month revenue growth (LAG())
+
+-Running total of revenue by month
+
+-Avg order-to-ship time by ship mode
+
+-Repeat vs one-time customers — who actually brings in more revenue takeaways
+
+-Discounts can pump up revenue numbers while profit quietly bleeds out. Dashboard makes that visible instead of letting one big "total revenue" number hide it.
+
+##Stack
+-MySQL / MySQL Workbench — cleaning + SQL
+-Python (pandas) — EDA + feature engineering
+-Tableau Public — dashboard (on Mac, so no Power BI here)
+
+##Folder structure
 
 ├── sql/
 
-│   └── supernova.sql
+│   ├── data_cleaning.sql
+
+│   └── analysis_queries.sql
+
+├── python/
+
+│   ├── eda.ipynb
+
+│   └── feature_engineering.py
 
 ├── tableau/
 
-│   └── Dashboard.twb
+│   └── sales_revenue_dashboard.twbx
 
 └── README.md
-Running it
-Run supernova_python_script.ipynb on super_nova_here.csv to produce supernova_python.csv
-Import the cleaned file into MySQL and run supernova.sql top to bottom
-Open Dashboard.twb in Tableau and point it at the SQL output
 
+##Running it
 
-
-Part of my data analytics portfolio, built while job hunting for fresher DA roles.
+-Import the CSV into MySQL (Table Data Import Wizard)
+-Run sql/data_cleaning.sql
+-Run sql/analysis_queries.sql
+-Run the Python notebook
+-Open the Tableau workbook, point it at the cleaned data
 

@@ -1,74 +1,148 @@
-# 💰Sales/Revenue Performance Dashboard
+# 📊 Sales and Revenue Analysis Dashboard
 
-So this one started because I got annoyed at dashboards that just show revenue going up and call it a win. Cool, revenue's up, but is anyone actually making money? That's basically what this project digs into.
+This project demonstrates how sales data can be transformed into business decisions using SQL and Tableau. Rather than only visualising data, the dashboard highlights revenue drivers, customer trends, and opportunities for improving profitability.
+A business intelligence project built to analyze sales performance, customer behaviour, and revenue trends using Tableau and SQL.
 
-##Pipeline: Excel -MySQL → Python → Tableau.
+This dashboard transforms raw sales data into actionable business insights, helping decision-makers understand revenue drivers, top-performing products, customer segments, and regional performance.
 
-##Dataset
-Customer shopping trends data — purchase amount, category, item, season, discount applied, shipping type, ratings, subscription status, payment method, previous purchases. Pretty standard retail transactions setup.
+---
 
+# 📸 Dashboard Preview
 
-#Step : Cleaning it in MySQL
-Data was messy as usual, so:
+![Dashboard](image/Dashboard.png)
 
-Fixed corrupted rows and dtype issues
-Got dates into proper date format
-Checked for duplicate order IDs and weird negative profit values
-Renamed columns to snake_case, fixed encoding issues
+---
 
-#Step : Tableau dashboard
-9 views:
+# 🌐 Interactive Dashboard
 
--Revenue / profit / margin % overall and by year
+👉 **Tableau Public:**  
+https://public.tableau.com/views/salesandrevenuedashboard/Dashboard1?:language=en-GB&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
--Revenue & profit by region, store, category, sub-category
+---
 
--Sub-categories that are actually losing money on average (window function)
+# 🎯 Business Problem
 
--Discount buckets (0%, 1-20%, 21-40%, 40%+) vs avg profit per bucket
+Businesses generate thousands of sales transactions every month, making it difficult to identify:
 
--Top 10 customers by lifetime profit vs top customers by revenue alone (not the same list, which was kind of the whole point)
+- Which products generate the highest revenue
+- Which regions perform the best
+- Customer purchasing patterns
+- Seasonal sales trends
+- Opportunities to improve profitability
 
--Month-over-month revenue growth (LAG())
+This dashboard answers these questions through interactive visualizations.
 
--Running total of revenue by month
+---
 
--Avg order-to-ship time by ship mode
+# 📂 Dataset
 
--Repeat vs one-time customers — who actually brings in more revenue takeaways
+- Superstore Sales Dataset
+- Cleaned and transformed before analysis
+- Includes sales, customers, products, categories, profit, quantity, discounts, and regions
 
--Discounts can pump up revenue numbers while profit quietly bleeds out. Dashboard makes that visible instead of letting one big "total revenue" number hide it.
+---
 
-##Stack
--MySQL / MySQL Workbench — cleaning + SQL
--Python (pandas) — EDA + feature engineering
--Tableau Public — dashboard (on Mac, so no Power BI here)
+# 🛠️ Tools Used
 
-##Folder structure
+- Tableau
+- SQL
+- Microsoft Excel
+- Git & GitHub
 
-├── sql/
+---
 
-│   ├── data_cleaning.sql
+# 📈 Dashboard KPIs
 
-│   └── analysis_queries.sql
+- 💰 Total Sales
+- 📦 Total Orders
+- 💵 Total Profit
+- 📊 Average Sales
+- 🛒 Top Selling Category
+- 🌍 Regional Performance
 
-├── python/
+---
 
-│   ├── eda.ipynb
+# 📊 Dashboard Features
 
-│   └── feature_engineering.py
+- Sales Trend Analysis
+- Revenue by Category
+- Revenue by Region
+- Customer Segment Analysis
+- Top Products
+- Profit Distribution
+- Interactive Filters
 
-├── tableau/
+---
 
-│   └── sales_revenue_dashboard.twbx
+# 🔍 Key Insights
 
-└── README.md
+- Technology generated the highest revenue.
+- West region contributed the highest sales.
+- Consumer segment accounted for the largest share of revenue.
+- A small number of products generated a significant percentage of total sales.
+- Discount-heavy orders did not always produce higher profits.
 
-##Running it
+---
 
--Import the CSV into MySQL (Table Data Import Wizard)
--Run sql/data_cleaning.sql
--Run sql/analysis_queries.sql
--Run the Python notebook
--Open the Tableau workbook, point it at the cleaned data
+# 💡 Business Recommendations
 
+- Increase inventory for high-performing products.
+- Reduce excessive discounting on already successful products.
+- Focus marketing campaigns on high-value customer segments.
+- Improve performance in underperforming regions through targeted promotions.
+- Monitor low-profit products and optimise pricing strategy.
+
+---
+
+# 📁 Project Structure
+
+```
+Sales-and-Revenue/
+│
+├── Dashboard/
+│   └── Sales_Revenue_Dashboard.twb
+│
+├── Data/
+│   └── superstore_clean.csv
+│
+├── Images/
+│   └── Dashboard.png
+│
+├── SQL/
+│   └── sales_analysis_queries.sql
+│
+├── README.md
+└── .gitignore
+```
+
+---
+
+# 🚀 How to Use
+
+1. Download the repository.
+2. Open the Tableau workbook.
+3. Connect the dataset if prompted.
+4. Explore the interactive dashboard.
+5. View the Tableau Public dashboard for an online version.
+
+---
+
+# 📌 Skills Demonstrated
+
+- Data Cleaning
+- SQL Querying
+- Exploratory Data Analysis
+- Business Intelligence
+- Dashboard Design
+- Data Storytelling
+- Data Visualisation
+
+---
+
+# 👤 Author
+
+**Punit Kumar**
+
+Mechanical Engineering Undergraduate at DTU | Aspiring Data Analyst
+
+GitHub: https://github.com/punitkumar-dtu

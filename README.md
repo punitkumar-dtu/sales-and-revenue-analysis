@@ -121,6 +121,27 @@ Sales-and-Revenue/
 ```
 
 ---
+Raw Data
+
+↓
+
+SQL Cleaning
+
+↓
+
+Analysis
+
+↓
+
+Tableau Dashboard
+
+↓
+
+Business Insights
+
+↓
+
+Recommendations
 
 # 🚀 How to Use
 

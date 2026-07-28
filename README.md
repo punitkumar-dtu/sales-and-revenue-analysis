@@ -53,34 +53,39 @@ This dashboard answers these questions through interactive visualizations.
 
 # 📈 Dashboard KPIs
 
-- 💰 Total Sales
-- 📦 Total Orders
-- 💵 Total Profit
-- 📊 Average Sales
-- 🛒 Top Selling Category
-- 🌍 Regional Performance
+- 💰 Total Sales : 2.30M
+- 📦 Total Profit Margin(%) : 12.47%
+- 💵 Total Profit : $286K
+- 🚛 Ship Mode (Mostly) : Standard Class
+- 🛒 Top Selling Category : Electronics
 
 ---
 
 # 📊 Dashboard Features
 
-- Sales Trend Analysis
-- Revenue by Category
-- Revenue by Region
-- Customer Segment Analysis
-- Top Products
-- Profit Distribution
-- Interactive Filters
+- Revenue / profit / margin % overall and by year
+-Revenue & profit by region, store, category, sub-category
+-Sub-categories that are actually losing money on average (window function)
+-Discount buckets (0%, 1-20%, 21-40%, 40%+) vs avg profit per bucket
+-Top 10 customers by lifetime profit vs top customers by revenue alone (not the same list, which was kind of the whole point)
+-Month-over-month revenue growth (LAG())
+-Running total of revenue by month
+-Avg order-to-ship time by ship mode
+-Repeat vs one-time customers — who actually brings in more revenue
+
 
 ---
 
 # 🔍 Key Insights
 
-- Technology generated the highest revenue.
+- Technology/Electronics  generated the highest revenue.
 - West region contributed the highest sales.
 - Consumer segment accounted for the largest share of revenue.
 - A small number of products generated a significant percentage of total sales.
 - Discount-heavy orders did not always produce higher profits.
+- TC-20980 Customer gives the highest profit-Most Valuable customer
+- CS-12505 least valuable customer
+- When discount bucket is 41+ then Avg profit is -99.3
 
 ---
 
